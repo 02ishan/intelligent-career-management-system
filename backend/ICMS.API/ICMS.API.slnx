@@ -1,3 +1,5 @@
 <Solution>
   <Project Path="ICMS.API/ICMS.API.csproj" />
+  <Project Path="ICMS.Data/ICMS.Data.csproj" Id="bb0ae3d4-b416-46cb-9f5f-a50758f885e7" />
+  <Project Path="ICMS.Models/ICMS.Models.csproj" Id="a643ad25-2640-455a-9853-9c0c6fc1bd1d" />
 </Solution>

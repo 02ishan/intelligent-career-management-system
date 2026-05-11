@@ -7,3 +7,6 @@ obj/
 
 *.backup
 *DocumentLayout*
+**/.vs/
+**/bin/
+**/obj/

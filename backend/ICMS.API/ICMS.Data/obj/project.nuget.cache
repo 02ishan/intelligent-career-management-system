@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "WkPuXUs4oN4=",
+  "success": true,
+  "projectFilePath": "F:\\MCA - PROJECT\\IntelligentCareerManagementSystem\\backend\\ICMS.API\\ICMS.Data\\ICMS.Data.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\ISHAN VERMA\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.26\\microsoft.windowsdesktop.app.ref.8.0.26.nupkg.sha512",
+    "C:\\Users\\ISHAN VERMA\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.26\\microsoft.netcore.app.ref.8.0.26.nupkg.sha512",
+    "C:\\Users\\ISHAN VERMA\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\8.0.26\\microsoft.aspnetcore.app.ref.8.0.26.nupkg.sha512"
+  ],
+  "logs": []
+}
