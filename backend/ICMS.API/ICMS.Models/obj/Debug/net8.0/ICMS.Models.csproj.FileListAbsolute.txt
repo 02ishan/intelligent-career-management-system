@@ -1,0 +1,12 @@
+F:\MCA - PROJECT\IntelligentCareerManagementSystem\backend\ICMS.API\ICMS.Models\bin\Debug\net8.0\ICMS.Models.deps.json
+F:\MCA - PROJECT\IntelligentCareerManagementSystem\backend\ICMS.API\ICMS.Models\bin\Debug\net8.0\ICMS.Models.dll
+F:\MCA - PROJECT\IntelligentCareerManagementSystem\backend\ICMS.API\ICMS.Models\bin\Debug\net8.0\ICMS.Models.pdb
+F:\MCA - PROJECT\IntelligentCareerManagementSystem\backend\ICMS.API\ICMS.Models\obj\Debug\net8.0\ICMS.Models.GeneratedMSBuildEditorConfig.editorconfig
+F:\MCA - PROJECT\IntelligentCareerManagementSystem\backend\ICMS.API\ICMS.Models\obj\Debug\net8.0\ICMS.Models.AssemblyInfoInputs.cache
+F:\MCA - PROJECT\IntelligentCareerManagementSystem\backend\ICMS.API\ICMS.Models\obj\Debug\net8.0\ICMS.Models.AssemblyInfo.cs
+F:\MCA - PROJECT\IntelligentCareerManagementSystem\backend\ICMS.API\ICMS.Models\obj\Debug\net8.0\ICMS.Models.csproj.CoreCompileInputs.cache
+F:\MCA - PROJECT\IntelligentCareerManagementSystem\backend\ICMS.API\ICMS.Models\obj\Debug\net8.0\ICMS.Models.sourcelink.json
+F:\MCA - PROJECT\IntelligentCareerManagementSystem\backend\ICMS.API\ICMS.Models\obj\Debug\net8.0\ICMS.Models.dll
+F:\MCA - PROJECT\IntelligentCareerManagementSystem\backend\ICMS.API\ICMS.Models\obj\Debug\net8.0\refint\ICMS.Models.dll
+F:\MCA - PROJECT\IntelligentCareerManagementSystem\backend\ICMS.API\ICMS.Models\obj\Debug\net8.0\ICMS.Models.pdb
+F:\MCA - PROJECT\IntelligentCareerManagementSystem\backend\ICMS.API\ICMS.Models\obj\Debug\net8.0\ref\ICMS.Models.dll

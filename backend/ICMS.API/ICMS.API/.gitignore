@@ -1,12 +1,14 @@
 ﻿.vs/
+**/.vs/
+
 bin/
 obj/
+
+**/bin/
+**/obj/
 
 *.user
 *.suo
 
 *.backup
 *DocumentLayout*
-**/.vs/
-**/bin/
-**/obj/
