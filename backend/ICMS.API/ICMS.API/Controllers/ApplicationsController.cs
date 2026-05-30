@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using ICMS.API.DTOs;
 using ICMS.Data.Context;
 using ICMS.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -73,6 +74,25 @@ namespace ICMS.API.Controllers
             await _context.SaveChangesAsync();
 
             return Ok("Application deleted successfully");
+        }
+
+        [HttpPut("{id}/status")]
+        [Authorize(Roles = "Recruiter,Admin")]
+        public async Task<IActionResult> UpdateApplicationStatus(int id, UpdateApplicationStatusDto dto)
+        {
+            var application = await _context.Applications.FindAsync(id);
+
+            if (application == null)
+            {
+                return NotFound();
+            }
+
+            application.Status = dto.Status;
+            application.Remarks = dto.Remarks;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(application);
         }
     }
 }
