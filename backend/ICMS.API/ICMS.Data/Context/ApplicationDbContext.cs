@@ -10,8 +10,20 @@ namespace ICMS.Data.Context
         ) : base(options)
         {
         }
+
         public DbSet<User> Users { get; set; }
+
         public DbSet<Job> Jobs { get; set; }
+
         public DbSet<Application> Applications { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Application>()
+                .Property(a => a.Status)
+                .HasConversion<string>();
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

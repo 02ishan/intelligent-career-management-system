@@ -1,8 +1,10 @@
-﻿namespace ICMS.API.DTOs
+﻿using ICMS.Models.Enums;
+
+namespace ICMS.API.DTOs
 {
     public class UpdateApplicationStatusDto
     {
-        public string Status { get; set; } = string.Empty;
+        public ApplicationStatus Status { get; set; }
         public string? Remarks { get; set; }
     }
 }

@@ -1,10 +1,23 @@
-﻿namespace ICMS.API.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ICMS.API.DTOs
 {
     public class RegisterDto
     {
-        public string FullName { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public string Role { get; set; }
+        [Required]
+        [StringLength(100)]
+        public required string FullName { get; set; }
+
+        [Required]
+        [EmailAddress]
+        public required string Email { get; set; }
+
+        [Required]
+        [MinLength(6)]
+        public required string Password { get; set; }
+
+        [Required]
+        [RegularExpression("^(Student|Recruiter|Admin)$")]
+        public required string Role { get; set; }
     }
 }

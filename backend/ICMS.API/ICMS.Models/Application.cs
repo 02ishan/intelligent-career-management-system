@@ -1,4 +1,6 @@
-﻿namespace ICMS.Models
+﻿using ICMS.Models.Enums;
+
+namespace ICMS.Models
 {
     public class Application
     {
@@ -6,7 +8,7 @@
         public int UserId { get; set; }
         public int JobId { get; set; }
         public DateTime AppliedDate { get; set; }
-        public string Status { get; set; } = "Applied";
+        public ApplicationStatus Status { get; set; } = ApplicationStatus.Applied;
         public string? Remarks { get; set; }
     }
 }
