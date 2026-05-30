@@ -24,4 +24,8 @@
     <ProjectReference Include="..\ICMS.Models\ICMS.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Uploads\Resumes\" />
+  </ItemGroup>
+
 </Project>

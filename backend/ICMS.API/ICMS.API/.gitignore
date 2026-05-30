@@ -12,3 +12,6 @@ obj/
 
 *.backup
 *DocumentLayout*
+
+# User uploaded files
+**/Uploads/

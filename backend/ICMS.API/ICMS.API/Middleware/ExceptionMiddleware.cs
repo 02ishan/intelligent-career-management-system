@@ -29,6 +29,7 @@ namespace ICMS.API.Middleware
                 var response = new
                 {
                     Message = "An unexpected error occurred."
+                    // Message = ex.Message,
                 };
 
                 var jsonResponse =
