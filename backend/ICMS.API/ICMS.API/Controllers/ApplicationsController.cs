@@ -1,4 +1,5 @@
-﻿using ICMS.Data.Context;
+﻿using Microsoft.AspNetCore.Authorization;
+using ICMS.Data.Context;
 using ICMS.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ namespace ICMS.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ApplicationsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -25,6 +27,7 @@ namespace ICMS.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Student")]
         public async Task<IActionResult> CreateApplication(Application application)
         {
             await _context.Applications.AddAsync(application);
@@ -35,6 +38,7 @@ namespace ICMS.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Student")]
         public async Task<IActionResult> UpdateApplication(int id, Application updatedApplication)
         {
             var existingApplication = await _context.Applications.FindAsync(id);
@@ -54,6 +58,7 @@ namespace ICMS.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteApplication(int id)
         {
             var application = await _context.Applications.FindAsync(id);

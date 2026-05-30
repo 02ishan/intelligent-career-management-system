@@ -1,4 +1,5 @@
-﻿using ICMS.Data.Context;
+﻿using Microsoft.AspNetCore.Authorization;
+using ICMS.Data.Context;
 using ICMS.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ namespace ICMS.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class JobsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -25,6 +27,7 @@ namespace ICMS.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Recruiter,Admin")]
         public async Task<IActionResult> CreateJob(Job job)
         {
             await _context.Jobs.AddAsync(job);
@@ -35,6 +38,7 @@ namespace ICMS.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Recruiter,Admin")]
         public async Task<IActionResult> UpdateJob(int id, Job updatedJob)
         {
             var existingJob = await _context.Jobs.FindAsync(id);
@@ -56,6 +60,7 @@ namespace ICMS.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteJob(int id)
         {
             var job = await _context.Jobs.FindAsync(id);
