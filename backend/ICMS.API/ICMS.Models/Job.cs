@@ -8,5 +8,6 @@
         public string? Location { get; set; }
         public string? Description { get; set; }
         public DateTime PostedDate { get; set; }
+        public int RecruiterId { get; set; }
     }
 }

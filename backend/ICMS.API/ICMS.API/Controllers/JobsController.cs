@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using ICMS.API.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using ICMS.Data.Context;
 using ICMS.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -28,8 +30,27 @@ namespace ICMS.API.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Recruiter,Admin")]
-        public async Task<IActionResult> CreateJob(Job job)
+        public async Task<IActionResult> CreateJob(CreateJobDto dto)
         {
+            var email = User.FindFirstValue(ClaimTypes.Email);
+
+            var recruiter = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+
+            if (recruiter == null)
+            {
+                return NotFound("Recruiter not found.");
+            }
+
+            var job = new Job
+            {
+                Title = dto.Title,
+                CompanyName = dto.CompanyName,
+                Location = dto.Location,
+                Description = dto.Description,
+                PostedDate = DateTime.UtcNow,
+                RecruiterId = recruiter.Id
+            };
+
             await _context.Jobs.AddAsync(job);
 
             await _context.SaveChangesAsync();
@@ -48,11 +69,29 @@ namespace ICMS.API.Controllers
                 return NotFound();
             }
 
+            var role = User.FindFirstValue(ClaimTypes.Role);
+
+            if (role == "Recruiter")
+            {
+                var email = User.FindFirstValue(ClaimTypes.Email);
+
+                var recruiter = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+
+                if (recruiter == null)
+                {
+                    return NotFound("Recruiter not found.");
+                }
+
+                if (existingJob.RecruiterId != recruiter.Id)
+                {
+                    return Forbid();
+                }
+            }
+
             existingJob.Title = updatedJob.Title;
             existingJob.CompanyName = updatedJob.CompanyName;
             existingJob.Location = updatedJob.Location;
             existingJob.Description = updatedJob.Description;
-            existingJob.PostedDate = updatedJob.PostedDate;
 
             await _context.SaveChangesAsync();
 
@@ -60,7 +99,7 @@ namespace ICMS.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Recruiter,Admin")]
         public async Task<IActionResult> DeleteJob(int id)
         {
             var job = await _context.Jobs.FindAsync(id);
@@ -68,6 +107,25 @@ namespace ICMS.API.Controllers
             if (job == null)
             {
                 return NotFound();
+            }
+            var role = User.FindFirstValue(ClaimTypes.Role);
+
+            if (role == "Recruiter")
+            {
+                var email = User.FindFirstValue(ClaimTypes.Email);
+
+                var recruiter = await _context.Users
+                    .FirstOrDefaultAsync(u => u.Email == email);
+
+                if (recruiter == null)
+                {
+                    return NotFound("Recruiter not found.");
+                }
+
+                if (job.RecruiterId != recruiter.Id)
+                {
+                    return Forbid();
+                }
             }
 
             _context.Jobs.Remove(job);
