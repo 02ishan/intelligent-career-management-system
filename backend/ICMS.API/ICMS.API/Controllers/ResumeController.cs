@@ -26,6 +26,15 @@ namespace ICMS.API.Controllers
             {
                 return BadRequest("Please upload a file.");
             }
+            if (Path.GetExtension(file.FileName).ToLower() != ".pdf")
+            {
+                return BadRequest("Only PDF files are allowed.");
+            }
+
+            if (file.Length > 5 * 1024 * 1024)
+            {
+                return BadRequest("File size cannot exceed 5 MB.");
+            }
 
             var userEmail = User.FindFirstValue(ClaimTypes.Email);
 

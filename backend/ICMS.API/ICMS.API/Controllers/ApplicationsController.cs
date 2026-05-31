@@ -1,4 +1,5 @@
-﻿using ICMS.API.DTOs;
+﻿using System.Security.Claims;
+using ICMS.API.DTOs;
 using ICMS.Data.Context;
 using ICMS.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -22,15 +23,49 @@ namespace ICMS.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetApplications()
         {
-            var applications = await _context.Applications.ToListAsync();
+            var role = User.FindFirstValue(ClaimTypes.Role);
 
-            return Ok(applications);
+            if (role == "Student")
+            {
+                var email = User.FindFirstValue(ClaimTypes.Email);
+
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+
+                if (user == null)
+                {
+                    return NotFound("User not found.");
+                }
+
+                var applications = await _context.Applications.Where(a => a.UserId == user.Id).ToListAsync();
+
+                return Ok(applications);
+            }
+
+            var allApplications = await _context.Applications.ToListAsync();
+
+            return Ok(allApplications);
         }
 
         [HttpPost]
         [Authorize(Roles = "Student")]
-        public async Task<IActionResult> CreateApplication(Application application)
+        public async Task<IActionResult> CreateApplication(CreateApplicationDto dto)
         {
+            var email = User.FindFirstValue(ClaimTypes.Email);
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            var application = new Application
+            {
+                UserId = user.Id,
+                JobId = dto.JobId,
+                AppliedDate = DateTime.UtcNow
+            };
+
             await _context.Applications.AddAsync(application);
 
             await _context.SaveChangesAsync();
