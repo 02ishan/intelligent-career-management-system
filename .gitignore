@@ -16,3 +16,6 @@ obj/
 # Visual Studio backup files
 *.backup
 *DocumentLayout*
+
+# User uploaded files
+**/Uploads/
