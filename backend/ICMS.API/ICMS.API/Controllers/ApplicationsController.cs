@@ -2,6 +2,7 @@
 using ICMS.API.DTOs;
 using ICMS.Data.Context;
 using ICMS.Models;
+using ICMS.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,16 +15,22 @@ namespace ICMS.API.Controllers
     public class ApplicationsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly EmailService _emailService;
 
-        public ApplicationsController(ApplicationDbContext context)
+        public ApplicationsController(
+            ApplicationDbContext context,
+            EmailService emailService)
         {
             _context = context;
+            _emailService = emailService;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetApplications()
         {
             var role = User.FindFirstValue(ClaimTypes.Role);
+
+            IQueryable<Application> query = _context.Applications;
 
             if (role == "Student")
             {
@@ -36,14 +43,36 @@ namespace ICMS.API.Controllers
                     return NotFound("User not found.");
                 }
 
-                var applications = await _context.Applications.Where(a => a.UserId == user.Id).ToListAsync();
-
-                return Ok(applications);
+                query = query.Where(a => a.UserId == user.Id);
             }
 
-            var allApplications = await _context.Applications.ToListAsync();
+            var applications = await query.ToListAsync();
 
-            return Ok(allApplications);
+            var result = new List<ApplicationDetailsDto>();
+
+            foreach (var application in applications)
+            {
+                var user = await _context.Users.FindAsync(application.UserId);
+
+                var job = await _context.Jobs.FindAsync(application.JobId);
+
+                if (user == null || job == null)
+                {
+                    continue;
+                }
+
+                result.Add(new ApplicationDetailsDto
+                {
+                    ApplicationId = application.Id,
+                    CandidateName = user.FullName ?? string.Empty,
+                    JobTitle = job.Title ?? string.Empty,
+                    CompanyName = job.CompanyName ?? string.Empty,
+                    Status = application.Status.ToString(),
+                    AppliedDate = application.AppliedDate
+                });
+            }
+
+            return Ok(result);
         }
 
         [HttpPost]
@@ -124,6 +153,16 @@ namespace ICMS.API.Controllers
 
             application.Status = dto.Status;
             application.Remarks = dto.Remarks;
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == application.UserId);
+
+            if (user != null)
+            {
+                await _emailService.SendEmailAsync(
+                    user.Email!,
+                    "Application Status Updated",
+                    $"Hello {user.FullName}, your application status has been updated to {application.Status}.");
+            }
 
             await _context.SaveChangesAsync();
 

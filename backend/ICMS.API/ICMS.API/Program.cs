@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using ICMS.Data.Context;
+using ICMS.API.Services;
 using ICMS.API.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -77,6 +78,7 @@ builder.Services.AddSwaggerGen(options =>
         });
 });
 
+builder.Services.AddScoped<EmailService>();
 var app = builder.Build();
 app.UseMiddleware<ExceptionMiddleware>();
 

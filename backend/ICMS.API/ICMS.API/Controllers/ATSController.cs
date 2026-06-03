@@ -13,6 +13,22 @@ namespace ICMS.API.Controllers
     [Authorize(Roles = "Recruiter,Admin")]
     public class ATSController : ControllerBase
     {
+        private static readonly string[] StopWords =
+        {
+            "work",
+            "on",
+            "and",
+            "the",
+            "a",
+            "an",
+            "for",
+            "with",
+            "in",
+            "to",
+            "of",
+            "applications",
+            "application"
+        };
         private readonly ApplicationDbContext _context;
         public ATSController(ApplicationDbContext context)
         {
@@ -60,21 +76,25 @@ namespace ICMS.API.Controllers
             var resumeText = textBuilder.ToString();
 
             var keywords = job.Description!
-            .Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+            .Where(k => !StopWords.Contains(k.ToLower()))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToArray();
 
-                    var matchedKeywords = keywords.Count(keyword =>
-                        resumeText.Contains(keyword,
-                            StringComparison.OrdinalIgnoreCase));
+            var matchedSkills = keywords.Where(keyword =>
+                resumeText.Contains(keyword, StringComparison.OrdinalIgnoreCase)).ToList();
 
-                    var score = keywords.Length == 0
-                        ? 0
-                        : (double)matchedKeywords / keywords.Length * 100;
+            var missingSkills = keywords.Except(matchedSkills, StringComparer.OrdinalIgnoreCase).ToList();
 
-            var result = new AtsScoreDto
+            var score = keywords.Length == 0
+                ? 0
+                : (double)matchedSkills.Count / keywords.Length * 100;
+
+            var result = new AtsSkillMatchDto
             {
                 ApplicationId = applicationId,
-                MatchedKeywords = matchedKeywords,
-                TotalKeywords = keywords.Length,
+                MatchedSkills = matchedSkills,
+                MissingSkills = missingSkills,
                 Score = Math.Round(score, 2)
             };
 
