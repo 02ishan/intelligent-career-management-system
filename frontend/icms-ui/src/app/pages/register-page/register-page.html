@@ -1,1 +1,95 @@
-<p>register-page works!</p>
+<div class="container-fluid vh-100">
+
+    <div class="row h-100">
+
+        <div
+            class="col-md-7 d-none d-md-flex align-items-center justify-content-center text-white"
+            style="background: linear-gradient(135deg, #4F8EF7, #6BA8FF);">
+
+            <div class="text-center px-5">
+
+                <h1 class="fw-bold mb-4">
+                    Intelligent Career Management System
+                </h1>
+
+                <p class="fs-5">
+                    Connect students, recruiters, and opportunities through a smart career management platform.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-5 d-flex align-items-center justify-content-center bg-white">
+
+            <div
+                class="card border-0 shadow-sm"
+                style="width: 500px; border-radius: 20px;">
+
+                <div class="card-body p-5">
+
+                    <h2 class="fw-bold text-center mb-2">
+                        Create Account
+                    </h2>
+
+                    <p class="text-center text-muted mb-4">
+                        Start your career journey with ICMS
+                    </p>
+
+                    <div class="mb-3">
+                        <label class="form-label">
+                            Full Name
+                        </label>
+
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Enter your full name"
+                [(ngModel)]="fullName">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">
+                            Email Address
+                        </label>
+
+                     <input
+                        type="email"
+                        class="form-control"
+                        placeholder="Enter your email"
+                        [(ngModel)]="email">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">
+                            Password
+                        </label>
+
+                        <input
+                          type="password"
+                          class="form-control"
+                          placeholder="Create a password"
+                          [(ngModel)]="password">
+                    </div>
+
+                    <button
+                        class="btn btn-success w-100"
+                        (click)="register()">
+                        Register
+                    </button>
+
+                    <div class="text-center mt-4">
+                        <a href="/login" class="text-decoration-none">
+                            Already have an account? Login
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

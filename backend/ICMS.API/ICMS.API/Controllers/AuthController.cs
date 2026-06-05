@@ -51,7 +51,10 @@ namespace ICMS.API.Controllers
 
             await _context.SaveChangesAsync();
 
-            return Ok("User registered successfully");
+            return Ok(new
+            {
+                message = "User registered successfully"
+            });
         }
 
         [HttpPost("login")]
@@ -103,7 +106,10 @@ namespace ICMS.API.Controllers
             var jwtToken = new JwtSecurityTokenHandler()
                 .WriteToken(token);
 
-            return Ok(jwtToken);
+            return Ok(new
+            {
+                token = jwtToken
+            });
         }
     }
 }
