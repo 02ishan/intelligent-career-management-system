@@ -3,6 +3,7 @@ import { authGuard } from './guards/auth-guard';
 import { LoginPage } from './pages/login-page/login-page';
 import { RegisterPage } from './pages/register-page/register-page';
 import { Dashboard } from './pages/dashboard/dashboard';
+import { JobsPage } from './pages/jobs-page/jobs-page';
 
 export const routes: Routes = [
   {
@@ -18,9 +19,14 @@ export const routes: Routes = [
     path: 'register',
     component: RegisterPage
   },
-{
-  path: 'dashboard',
-  component: Dashboard,
-  canActivate: [authGuard]
-}
+  {
+    path: 'dashboard',
+    component: Dashboard,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'jobs',
+    component: JobsPage,
+    canActivate: [authGuard]
+  }
 ];
