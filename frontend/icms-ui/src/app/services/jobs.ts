@@ -14,5 +14,27 @@ export class JobsService {
   getJobs() {
     return this.http.get(this.apiUrl);
   }
+  createJob(jobData: any) {
+    return this.http.post(
+      this.apiUrl,
+      jobData
+    );
+  }
+  updateJob(id: number, jobData: any) {
+    return this.http.put(
+      `${this.apiUrl}/${id}`,
+      jobData
+    );
+  }
+  getJobById(id: number) {
+    return this.http.get(
+      `${this.apiUrl}/${id}`
+    );
+  }
+  deleteJob(id: number) {
+    return this.http.delete(
+      `${this.apiUrl}/${id}`
+    );
+  }
 
 }

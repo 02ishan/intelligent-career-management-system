@@ -28,6 +28,25 @@
                     <p>
                         {{ job.description }}
                     </p>
+                    <div class="mt-3 d-flex gap-2">
+
+                        <a
+                            class="btn btn-warning"
+                            [routerLink]="['/edit-job', job.id]">
+
+                            Edit
+
+                        </a>
+
+                        <button
+                            class="btn btn-danger"
+                            (click)="deleteJob(job.id)">
+
+                            Delete
+
+                        </button>
+
+                    </div>
 
                 </div>
 

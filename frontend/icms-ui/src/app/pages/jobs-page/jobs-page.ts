@@ -1,12 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 import { JobsService } from '../../services/jobs';
 
 @Component({
   selector: 'app-jobs-page',
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    RouterLink
+  ],
   templateUrl: './jobs-page.html',
   styleUrl: './jobs-page.css',
 })
@@ -26,8 +29,6 @@ export class JobsPage implements OnInit {
       .subscribe({
         next: (response: any) => {
 
-          console.log(response);
-
           this.jobs = response;
 
           this.cdr.detectChanges();
@@ -38,5 +39,33 @@ export class JobsPage implements OnInit {
       });
 
   }
+
+  deleteJob(id: number) {
+
+  if (!confirm('Are you sure you want to delete this job?')) {
+    return;
+  }
+
+  this.jobsService.deleteJob(id)
+    .subscribe({
+      next: (response: any) => {
+
+        alert(response.message);
+
+        this.jobs = this.jobs.filter(
+          job => job.id !== id
+        );
+
+        this.cdr.detectChanges();
+
+      },
+      error: (error) => {
+
+        alert('Failed To Delete Job');
+
+      }
+    });
+
+}
 
 }

@@ -28,6 +28,19 @@ namespace ICMS.API.Controllers
             return Ok(jobs);
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetJobById(int id)
+        {
+            var job = await _context.Jobs.FindAsync(id);
+
+            if (job == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(job);
+        }
+
         [HttpPost]
         [Authorize(Roles = "Recruiter,Admin")]
         public async Task<IActionResult> CreateJob(CreateJobDto dto)
@@ -132,7 +145,10 @@ namespace ICMS.API.Controllers
 
             await _context.SaveChangesAsync();
 
-            return Ok("Job deleted successfully");
+            return Ok(new
+            {
+                message = "Job deleted successfully"
+            });
         }
     }
 }

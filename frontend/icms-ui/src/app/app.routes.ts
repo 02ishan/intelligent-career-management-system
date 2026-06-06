@@ -4,6 +4,8 @@ import { LoginPage } from './pages/login-page/login-page';
 import { RegisterPage } from './pages/register-page/register-page';
 import { Dashboard } from './pages/dashboard/dashboard';
 import { JobsPage } from './pages/jobs-page/jobs-page';
+import { CreateJobPage } from './pages/create-job-page/create-job-page';
+import { EditJobPage } from './pages/edit-job-page/edit-job-page';
 
 export const routes: Routes = [
   {
@@ -27,6 +29,16 @@ export const routes: Routes = [
   {
     path: 'jobs',
     component: JobsPage,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'create-job',
+    component: CreateJobPage,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'edit-job/:id',
+    component: EditJobPage,
     canActivate: [authGuard]
   }
 ];
