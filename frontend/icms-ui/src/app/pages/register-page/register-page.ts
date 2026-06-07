@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-
 import { Auth } from '../../services/auth';
+import { Navbar } from '../../components/navbar/navbar';
 
 @Component({
   selector: 'app-register-page',
-  imports: [FormsModule],
+  imports: [FormsModule, Navbar],
   templateUrl: './register-page.html',
   styleUrl: './register-page.css',
 })

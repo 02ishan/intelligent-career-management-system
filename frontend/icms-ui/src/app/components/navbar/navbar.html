@@ -1,0 +1,153 @@
+@if(showNavbar) {
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+    <div class="container-fluid">
+
+        <a
+            class="navbar-brand"
+            routerLink="/">
+
+            ICMS
+
+        </a>
+
+        <div class="collapse navbar-collapse show">
+
+            <ul class="navbar-nav me-auto">
+
+                @if(role === 'Student') {
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        routerLink="/jobs">
+
+                        Jobs
+
+                    </a>
+
+                </li>
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        routerLink="/my-applications">
+
+                        My Applications
+
+                    </a>
+
+                </li>
+
+                }
+
+                @if(role === 'Recruiter') {
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        routerLink="/dashboard">
+
+                        Dashboard
+
+                    </a>
+
+                </li>
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        routerLink="/jobs">
+
+                        Jobs
+
+                    </a>
+
+                </li>
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        routerLink="/create-job">
+
+                        Create Job
+
+                    </a>
+
+                </li>
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        routerLink="/applications">
+
+                        Applications
+
+                    </a>
+
+                </li>
+
+                }
+
+                @if(role === 'Admin') {
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        routerLink="/dashboard">
+
+                        Dashboard
+
+                    </a>
+
+                </li>
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        routerLink="/jobs">
+
+                        Jobs
+
+                    </a>
+
+                </li>
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        routerLink="/applications">
+
+                        Applications
+
+                    </a>
+
+                </li>
+
+                }
+
+            </ul>
+
+            <button
+                class="btn btn-danger"
+                (click)="logout()">
+
+                Logout
+
+            </button>
+
+        </div>
+
+    </div>
+
+</nav>
+}

@@ -1,0 +1,56 @@
+<app-navbar></app-navbar>
+<div class="container mt-4">
+
+    <div class="mb-4">
+
+        <h2>
+            My Applications
+        </h2>
+
+    </div>
+
+    <div class="table-responsive">
+
+        <table class="table table-bordered table-hover">
+
+            <thead>
+
+                <tr>
+
+                    <th>Application ID</th>
+                    <th>Job Title</th>
+                    <th>Company</th>
+                    <th>Status</th>
+                    <th>Applied Date</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @for(application of applications; track application.applicationId) {
+
+                <tr>
+
+                    <td>{{ application.applicationId }}</td>
+
+                    <td>{{ application.jobTitle }}</td>
+
+                    <td>{{ application.companyName }}</td>
+
+                    <td>{{ application.status }}</td>
+
+                    <td>{{ application.appliedDate }}</td>
+
+                </tr>
+
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>

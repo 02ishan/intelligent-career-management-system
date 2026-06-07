@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-
 import { JobsService } from '../../services/jobs';
+import { Navbar } from '../../components/navbar/navbar';
 
 @Component({
   selector: 'app-create-job-page',
-  imports: [FormsModule],
+  imports: [FormsModule, Navbar],
   templateUrl: './create-job-page.html',
   styleUrl: './create-job-page.css',
 })

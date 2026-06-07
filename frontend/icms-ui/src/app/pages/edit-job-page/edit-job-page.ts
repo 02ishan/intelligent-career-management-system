@@ -3,10 +3,11 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ChangeDetectorRef } from '@angular/core';
 import { JobsService } from '../../services/jobs';
+import { Navbar } from '../../components/navbar/navbar';
 
 @Component({
   selector: 'app-edit-job-page',
-  imports: [FormsModule],
+  imports: [FormsModule, Navbar],
   templateUrl: './edit-job-page.html',
   styleUrl: './edit-job-page.css',
 })
@@ -37,8 +38,6 @@ constructor(
       .subscribe({
         next: (response: any) => {
 
-          console.log(response);
-
           this.title = response.title;
           this.companyName = response.companyName;
           this.location = response.location;
@@ -46,7 +45,6 @@ constructor(
           this.cdr.detectChanges();
         },
         error: (error) => {
-          console.log(error);
         }
       });
 

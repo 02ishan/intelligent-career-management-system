@@ -1,62 +1,109 @@
+<app-navbar></app-navbar>
 <div class="container mt-4">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="mb-4">
 
-        <h2>Recruiter Dashboard</h2>
-
-        <button
-            class="btn btn-danger"
-            (click)="logout()">
-            Logout
-        </button>
+        <h2>
+            Recruiter Dashboard
+        </h2>
 
     </div>
 
     <div class="row g-4">
 
         <div class="col-md-4">
-            <div class="card shadow-sm">
+
+            <div
+                class="card shadow-sm"
+                style="cursor:pointer"
+                (click)="navigateToJobs()">
+
                 <div class="card-body text-center">
+
                     <h5>Total Jobs</h5>
+
                     <h2>{{ totalJobs }}</h2>
+
                 </div>
+
             </div>
+
         </div>
 
         <div class="col-md-4">
-            <div class="card shadow-sm">
+
+            <div
+                class="card shadow-sm"
+                style="cursor:pointer"
+                (click)="navigateToApplications()">
+
                 <div class="card-body text-center">
+
                     <h5>Total Applications</h5>
+
                     <h2>{{ totalApplications }}</h2>
+
                 </div>
+
             </div>
+
         </div>
 
         <div class="col-md-4">
-            <div class="card shadow-sm">
+
+            <div
+                class="card shadow-sm"
+                style="cursor:pointer"
+                (click)="navigateToShortlisted()">
+
                 <div class="card-body text-center">
+
                     <h5>Shortlisted</h5>
+
                     <h2>{{ shortlistedCandidates }}</h2>
+
                 </div>
+
             </div>
+
         </div>
 
         <div class="col-md-6">
-            <div class="card shadow-sm">
+
+            <div
+                class="card shadow-sm"
+                style="cursor:pointer"
+                (click)="navigateToRejected()">
+
                 <div class="card-body text-center">
+
                     <h5>Rejected</h5>
+
                     <h2>{{ rejectedCandidates }}</h2>
+
                 </div>
+
             </div>
+
         </div>
 
         <div class="col-md-6">
-            <div class="card shadow-sm">
+
+            <div
+                class="card shadow-sm"
+                style="cursor:pointer"
+                (click)="navigateToSelected()">
+
                 <div class="card-body text-center">
+
                     <h5>Selected</h5>
+
                     <h2>{{ selectedCandidates }}</h2>
+
                 </div>
+
             </div>
+
         </div>
 
     </div>

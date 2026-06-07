@@ -1,12 +1,15 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-
+import { Navbar } from '../../components/navbar/navbar';
 import { DashboardService } from '../../services/dashboard';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    Navbar
+  ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
@@ -46,12 +49,45 @@ export class Dashboard implements OnInit {
 
   }
 
-  logout() {
+  navigateToJobs() {
+    this.router.navigate(['/jobs']);
+  }
 
-    localStorage.removeItem('token');
+  navigateToApplications() {
+    this.router.navigate(['/applications']);
+  }
 
-    this.router.navigate(['/login']);
+  navigateToShortlisted() {
+    this.router.navigate(
+      ['/applications'],
+      {
+        queryParams: {
+          filter: 'shortlisted'
+        }
+      }
+    );
+  }
 
+  navigateToSelected() {
+    this.router.navigate(
+      ['/applications'],
+      {
+        queryParams: {
+          filter: 'selected'
+        }
+      }
+    );
+  }
+
+  navigateToRejected() {
+    this.router.navigate(
+      ['/applications'],
+      {
+        queryParams: {
+          filter: 'rejected'
+        }
+      }
+    );
   }
 
 }

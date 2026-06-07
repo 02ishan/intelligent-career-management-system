@@ -1,0 +1,110 @@
+
+<app-navbar></app-navbar>
+
+<div class="container mt-4">
+
+    <div class="mb-4">
+
+        <h2>
+            Applications
+        </h2>
+
+    </div>
+
+    <div class="table-responsive">
+
+        <table class="table table-bordered table-hover">
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Candidate</th>
+                    <th>Job</th>
+                    <th>Company</th>
+                    <th>Status</th>
+                    <th>Applied Date</th>
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @for(application of applications; track application.applicationId) {
+
+                <tr>
+
+                    <td>{{ application.applicationId }}</td>
+
+                    <td>{{ application.candidateName }}</td>
+
+                    <td>{{ application.jobTitle }}</td>
+
+                    <td>{{ application.companyName }}</td>
+
+                    <td>{{ application.status }}</td>
+
+                    <td>{{ application.appliedDate }}</td>
+
+                    <td>
+
+                        <div class="d-flex flex-wrap gap-1">
+
+                            <button
+                                class="btn btn-secondary btn-sm"
+                                (click)="updateStatus(application.applicationId, 1)">
+
+                                Under Review
+
+                            </button>
+
+                            <button
+                                class="btn btn-warning btn-sm"
+                                (click)="updateStatus(application.applicationId, 2)">
+
+                                Shortlist
+
+                            </button>
+
+                            <button
+                                class="btn btn-info btn-sm"
+                                (click)="updateStatus(application.applicationId, 3)">
+
+                                Interview
+
+                            </button>
+
+                            <button
+                                class="btn btn-success btn-sm"
+                                (click)="updateStatus(application.applicationId, 4)">
+
+                                Select
+
+                            </button>
+
+                            <button
+                                class="btn btn-danger btn-sm"
+                                (click)="updateStatus(application.applicationId, 5)">
+
+                                Reject
+
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
