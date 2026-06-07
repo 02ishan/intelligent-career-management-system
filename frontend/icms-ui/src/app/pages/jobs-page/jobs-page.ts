@@ -20,6 +20,7 @@ export class JobsPage implements OnInit {
   jobs: any[] = [];
 
   role = '';
+  currentUserId = 0;
 
   constructor(
     private jobsService: JobsService,
@@ -40,6 +41,10 @@ export class JobsPage implements OnInit {
 
       this.role =
         payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+
+      this.currentUserId = Number(
+        payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier']
+);
     }
 
     this.jobsService.getJobs()

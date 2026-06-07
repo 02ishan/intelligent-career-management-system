@@ -10,13 +10,11 @@ namespace ICMS.Data.Context
         ) : base(options)
         {
         }
-
         public DbSet<User> Users { get; set; }
-
         public DbSet<Job> Jobs { get; set; }
-
         public DbSet<Application> Applications { get; set; }
-
+        public DbSet<AuditLog> AuditLogs { get; set; }
+        public DbSet<JobAudit> JobAudits { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Application>()

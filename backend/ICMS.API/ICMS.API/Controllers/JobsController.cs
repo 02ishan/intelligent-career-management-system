@@ -1,10 +1,11 @@
-﻿using System.Security.Claims;
-using ICMS.API.DTOs;
-using Microsoft.AspNetCore.Authorization;
+﻿using ICMS.API.DTOs;
+using ICMS.API.Services;
 using ICMS.Data.Context;
 using ICMS.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace ICMS.API.Controllers
 {
@@ -14,10 +15,14 @@ namespace ICMS.API.Controllers
     public class JobsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly AuditLogService _auditLogService;
 
-        public JobsController(ApplicationDbContext context)
+        public JobsController(
+            ApplicationDbContext context,
+            AuditLogService auditLogService)
         {
             _context = context;
+            _auditLogService = auditLogService;
         }
 
         [HttpGet]
@@ -68,6 +73,21 @@ namespace ICMS.API.Controllers
 
             await _context.SaveChangesAsync();
 
+            await _auditLogService.LogAsync(
+                recruiter.Id,
+                recruiter.Email ?? "",
+                "JOB_CREATED",
+                "Job",
+                job.Id,
+                $"Created job {job.Title}"
+            );
+
+            await _auditLogService.LogJobAsync(
+                job,
+                recruiter.Email ?? "",
+                "JOB_CREATED"
+            );
+
             return Ok(job);
         }
 
@@ -108,6 +128,23 @@ namespace ICMS.API.Controllers
 
             await _context.SaveChangesAsync();
 
+            var recruiterEmail = User.FindFirstValue(ClaimTypes.Email) ?? "";
+
+            await _auditLogService.LogAsync(
+                existingJob.RecruiterId,
+                recruiterEmail,
+                "JOB_UPDATED",
+                "Job",
+                existingJob.Id,
+                $"Updated job {existingJob.Title}"
+            );
+
+            await _auditLogService.LogJobAsync(
+                existingJob,
+                recruiterEmail,
+                "JOB_UPDATED"
+            );
+
             return Ok(existingJob);
         }
 
@@ -140,6 +177,23 @@ namespace ICMS.API.Controllers
                     return Forbid();
                 }
             }
+
+            var recruiterEmail = User.FindFirstValue(ClaimTypes.Email) ?? "";
+
+            await _auditLogService.LogAsync(
+                job.RecruiterId,
+                recruiterEmail,
+                "JOB_DELETED",
+                "Job",
+                job.Id,
+                $"Deleted job {job.Title}"
+            );
+
+            await _auditLogService.LogJobAsync(
+                job,
+                recruiterEmail,
+                "JOB_DELETED"
+            );
 
             _context.Jobs.Remove(job);
 

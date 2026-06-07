@@ -17,13 +17,15 @@ namespace ICMS.API.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly EmailService _emailService;
-
+        private readonly AuditLogService _auditLogService;
         public ApplicationsController(
             ApplicationDbContext context,
-            EmailService emailService)
+            EmailService emailService,
+            AuditLogService auditLogService)
         {
             _context = context;
             _emailService = emailService;
+            _auditLogService = auditLogService;
         }
 
         private async Task<List<ApplicationDetailsDto>> GetFilteredApplications(ApplicationStatus? status = null)
@@ -238,6 +240,15 @@ namespace ICMS.API.Controllers
 
             await _context.SaveChangesAsync();
 
+            await _auditLogService.LogAsync(
+                user.Id,
+                user.Email ?? "",
+                "APPLICATION_CREATED",
+                "Application",
+                application.Id,
+                $"Applied for Job Id {application.JobId}"
+            );
+
             return Ok(new
             {
                 message = "Application submitted successfully."
@@ -261,6 +272,17 @@ namespace ICMS.API.Controllers
 
             await _context.SaveChangesAsync();
 
+            var email = User.FindFirstValue(ClaimTypes.Email) ?? "";
+
+            await _auditLogService.LogAsync(
+                existingApplication.UserId,
+                email,
+                "APPLICATION_UPDATED",
+                "Application",
+                existingApplication.Id,
+                "Application updated"
+            );
+
             return Ok(existingApplication);
         }
 
@@ -274,6 +296,15 @@ namespace ICMS.API.Controllers
             {
                 return NotFound();
             }
+
+            await _auditLogService.LogAsync(
+                application.UserId,
+                "ADMIN",
+                "APPLICATION_DELETED",
+                "Application",
+                application.Id,
+                "Application deleted by admin"
+            );
 
             _context.Applications.Remove(application);
 
@@ -312,6 +343,17 @@ namespace ICMS.API.Controllers
                     // Ignore email errors for now
                 }
             }
+
+            var recruiterEmail = User.FindFirstValue(ClaimTypes.Email) ?? "";
+
+            await _auditLogService.LogAsync(
+                application.UserId,
+                recruiterEmail,
+                application.Status.ToString().ToUpper(),
+                "Application",
+                application.Id,
+                $"Application status changed to {application.Status}"
+            );
 
             await _context.SaveChangesAsync();
 

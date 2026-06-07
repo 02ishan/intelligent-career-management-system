@@ -36,7 +36,11 @@
 
                     <div class="mt-3 d-flex gap-2">
 
-                        @if(role === 'Recruiter' || role === 'Admin') {
+                        @if(
+                            role === 'Admin'
+                            ||
+                            (role === 'Recruiter' && job.recruiterId === currentUserId)
+                        ) {
 
                         <a
                             class="btn btn-warning"

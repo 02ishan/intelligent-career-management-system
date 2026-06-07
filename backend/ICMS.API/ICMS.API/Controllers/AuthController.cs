@@ -1,13 +1,14 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using BCrypt.Net;
+﻿using BCrypt.Net;
 using ICMS.API.DTOs;
+using ICMS.API.Services;
 using ICMS.Data.Context;
 using ICMS.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace ICMS.API.Controllers
 {
@@ -17,15 +18,18 @@ namespace ICMS.API.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IConfiguration _configuration;
+        private readonly AuditLogService _auditLogService;
 
         public AuthController
         (
             ApplicationDbContext context,
-            IConfiguration configuration
+            IConfiguration configuration,
+            AuditLogService auditLogService
         )
         {
             _context = context;
             _configuration = configuration;
+            _auditLogService = auditLogService;
         }
 
         [HttpPost("register")]
@@ -50,6 +54,15 @@ namespace ICMS.API.Controllers
             await _context.Users.AddAsync(user);
 
             await _context.SaveChangesAsync();
+
+            await _auditLogService.LogAsync(
+                user.Id,
+                user.Email ?? "",
+                "REGISTER",
+                "User",
+                user.Id,
+                $"New user registered with role {user.Role}"
+            );
 
             return Ok(new
             {
@@ -79,9 +92,25 @@ namespace ICMS.API.Controllers
 
             var claims = new[]
             {
-                new Claim(ClaimTypes.Email, user.Email!),
-                new Claim(ClaimTypes.Role, user.Role!),
-                new Claim(ClaimTypes.Name, user.FullName!)
+                new Claim(
+                    ClaimTypes.NameIdentifier,
+                    user.Id.ToString()
+                ),
+
+                new Claim(
+                    ClaimTypes.Email,
+                    user.Email!
+                ),
+
+                new Claim(
+                    ClaimTypes.Role,
+                    user.Role!
+                ),
+
+                new Claim(
+                    ClaimTypes.Name,
+                    user.FullName!
+                )
             };
 
             var key = new SymmetricSecurityKey(
@@ -105,6 +134,15 @@ namespace ICMS.API.Controllers
 
             var jwtToken = new JwtSecurityTokenHandler()
                 .WriteToken(token);
+
+            await _auditLogService.LogAsync(
+                user.Id,
+                user.Email ?? "",
+                "LOGIN",
+                "User",
+                user.Id,
+                $"{user.FullName} logged in"
+            );
 
             return Ok(new
             {

@@ -90,6 +90,9 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddScoped<EmailService>();
+
+builder.Services.AddScoped<AuditLogService>();
+
 var app = builder.Build();
 app.UseMiddleware<ExceptionMiddleware>();
 
