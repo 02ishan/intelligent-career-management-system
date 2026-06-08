@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApplicationsService } from '../../services/applications';
 import { Navbar } from '../../components/navbar/navbar';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-applications-page',
@@ -130,14 +131,22 @@ export class ApplicationsPage implements OnInit {
       .subscribe({
         next: () => {
 
-          alert('Status Updated Successfully');
+          Swal.fire(
+  'Success',
+  'Status Updated Successfully',
+  'success'
+);
 
           this.loadApplications();
 
         },
         error: () => {
 
-          alert('Failed To Update Status');
+          Swal.fire(
+  'Error',
+  'Failed To Update Status',
+  'error'
+);
 
         }
       });

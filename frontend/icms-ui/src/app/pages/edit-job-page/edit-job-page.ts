@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ChangeDetectorRef } from '@angular/core';
 import { JobsService } from '../../services/jobs';
 import { Navbar } from '../../components/navbar/navbar';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-edit-job-page',
@@ -65,14 +66,22 @@ constructor(
     ).subscribe({
       next: () => {
 
-        alert('Job Updated Successfully');
+        Swal.fire(
+  'Success',
+  'Job Updated Successfully',
+  'success'
+);
 
         this.router.navigate(['/jobs']);
 
       },
       error: () => {
 
-        alert('Failed To Update Job');
+        Swal.fire(
+  'Error',
+  'Failed To Update Job',
+  'error'
+);
 
       }
     });

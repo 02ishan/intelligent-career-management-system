@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { Navbar } from '../../components/navbar/navbar';
 import { ApplicationsService } from '../../services/applications';
 import { JobsService } from '../../services/jobs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-jobs-page',
@@ -19,7 +20,10 @@ export class JobsPage implements OnInit {
 
   jobs: any[] = [];
 
+  appliedApplications: any[] = [];
+
   role = '';
+
   currentUserId = 0;
 
   constructor(
@@ -44,7 +48,8 @@ export class JobsPage implements OnInit {
 
       this.currentUserId = Number(
         payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier']
-);
+      );
+
     }
 
     this.jobsService.getJobs()
@@ -60,32 +65,68 @@ export class JobsPage implements OnInit {
         }
       });
 
+    if (this.role === 'Student') {
+
+      this.applicationsService
+        .getApplications()
+        .subscribe({
+          next: (response: any) => {
+
+            this.appliedApplications = response;
+
+            this.cdr.detectChanges();
+
+          }
+        });
+
+    }
+
   }
 
   deleteJob(id: number) {
 
-    if (!confirm('Are you sure you want to delete this job?')) {
-      return;
-    }
+    Swal.fire({
+      title: 'Delete Job?',
+      text: 'This action cannot be undone.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Delete',
+      cancelButtonText: 'Cancel'
+    })
+      .then(result => {
 
-    this.jobsService.deleteJob(id)
-      .subscribe({
-        next: (response: any) => {
-
-          alert(response.message);
-
-          this.jobs = this.jobs.filter(
-            job => job.id !== id
-          );
-
-          this.cdr.detectChanges();
-
-        },
-        error: () => {
-
-          alert('Failed To Delete Job');
-
+        if (!result.isConfirmed) {
+          return;
         }
+
+        this.jobsService.deleteJob(id)
+          .subscribe({
+            next: (response: any) => {
+
+              Swal.fire(
+                'Deleted!',
+                response.message,
+                'success'
+              );
+
+              this.jobs = this.jobs.filter(
+                job => job.id !== id
+              );
+
+              this.cdr.detectChanges();
+
+            },
+            error: () => {
+
+              Swal.fire(
+                'Error',
+                'Failed To Delete Job',
+                'error'
+              );
+
+            }
+          });
+
       });
 
   }
@@ -97,24 +138,100 @@ export class JobsPage implements OnInit {
       .subscribe({
         next: () => {
 
-          alert('Application Submitted Successfully');
+          Swal.fire(
+            'Success',
+            'Application Submitted Successfully',
+            'success'
+          );
+
+          this.applicationsService
+            .getApplications()
+            .subscribe({
+              next: (response: any) => {
+
+                this.appliedApplications = response;
+
+                this.cdr.detectChanges();
+
+              }
+            });
 
         },
         error: (error: any) => {
 
           if (error.status === 400) {
 
-            alert('You have already applied for this job.');
+            Swal.fire(
+              'Already Applied',
+              'You have already applied for this job.',
+              'info'
+            );
 
           }
           else {
 
-            alert('Failed To Apply');
+            Swal.fire(
+              'Error',
+              'Failed To Apply',
+              'error'
+            );
 
           }
 
         }
       });
+
+  }
+
+  hasApplied(jobTitle: string): boolean {
+
+    return this.appliedApplications.some(
+      application => application.jobTitle === jobTitle
+    );
+
+  }
+
+  getApplicationStatus(jobTitle: string): string {
+
+    const application =
+      this.appliedApplications.find(
+        application => application.jobTitle === jobTitle
+      );
+
+    return application
+      ? application.status
+      : '';
+
+  }
+
+  getStatusClass(jobTitle: string): string {
+
+    const status = this.getApplicationStatus(jobTitle);
+
+    switch (status) {
+
+      case 'Applied':
+        return 'bg-primary';
+
+      case 'UnderReview':
+        return 'bg-secondary';
+
+      case 'Shortlisted':
+        return 'bg-warning text-dark';
+
+      case 'Interview':
+        return 'bg-info text-dark';
+
+      case 'Selected':
+        return 'bg-success';
+
+      case 'Rejected':
+        return 'bg-danger';
+
+      default:
+        return 'bg-secondary';
+
+    }
 
   }
 

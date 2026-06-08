@@ -62,13 +62,27 @@
 
                         @if(role === 'Student') {
 
-                        <button
-                            class="btn btn-success"
-                            (click)="apply(job.id)">
+                            @if(!hasApplied(job.title)) {
 
-                            Apply
+                                <button
+                                    class="btn btn-success"
+                                    (click)="apply(job.id)">
 
-                        </button>
+                                    Apply
+
+                                </button>
+
+                            }
+                            @else {
+
+                              <span
+                                  class="badge fs-6"
+                                  [ngClass]="getStatusClass(job.title)">
+
+                                  {{ getApplicationStatus(job.title) }}
+
+                              </span>
+                            }
 
                         }
 

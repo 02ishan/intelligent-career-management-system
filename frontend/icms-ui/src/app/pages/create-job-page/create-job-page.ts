@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { JobsService } from '../../services/jobs';
 import { Navbar } from '../../components/navbar/navbar';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-create-job-page',
@@ -36,14 +37,22 @@ export class CreateJobPage {
       .subscribe({
         next: () => {
 
-          alert('Job Created Successfully');
+          Swal.fire(
+  'Success',
+  'Job Created Successfully',
+  'success'
+);
 
           this.router.navigate(['/jobs']);
 
         },
         error: () => {
 
-          alert('Failed To Create Job');
+          Swal.fire(
+  'Error',
+  'Failed To Create Job',
+  'error'
+);
 
         }
       });
