@@ -16,6 +16,8 @@ export class Navbar implements OnInit {
 
   role = '';
 
+  fullName = '';
+
   showNavbar = true;
 
   constructor(
@@ -47,6 +49,9 @@ export class Navbar implements OnInit {
 
       this.role =
         payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+
+      this.fullName =
+        payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'];
 
     }
 

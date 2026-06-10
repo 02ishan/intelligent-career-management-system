@@ -20,6 +20,7 @@ export class Dashboard implements OnInit {
   shortlistedCandidates = 0;
   rejectedCandidates = 0;
   selectedCandidates = 0;
+  role = '';
 
   constructor(
     private router: Router,
@@ -46,6 +47,17 @@ export class Dashboard implements OnInit {
         error: () => {
         }
       });
+      const token = localStorage.getItem('token');
+
+      if (token) {
+
+        const payload = JSON.parse(
+          atob(token.split('.')[1])
+        );
+
+        this.role =
+          payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+      }
 
   }
 

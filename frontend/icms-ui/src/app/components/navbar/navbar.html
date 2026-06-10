@@ -137,13 +137,23 @@
 
             </ul>
 
-            <button
-                class="btn btn-danger"
-                (click)="logout()">
+            <div class="d-flex flex-column align-items-end text-white">
 
-                Logout
+                <span class="mb-1">
 
-            </button>
+                    Welcome, {{ fullName }}
+
+                </span>
+
+                <button
+                    class="btn btn-danger btn-sm"
+                    (click)="logout()">
+
+                    Logout
+
+                </button>
+
+            </div>
 
         </div>
 
